@@ -51,78 +51,133 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ListView
-                android:layout_gravity="center"
+            <GridLayout
                 android:layout_weight="1"
                 android:layout_margin="20dp"
-                android:id="@+id/LV_item"
+                android:id="@+id/grid_item"
+                android:rowCount="5"
+                android:columnCount="3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
 
-            <ProgressBar
-                android:id="@+id/pb_fetching"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Button
+                    android:onClick="addItem"
+                    android:id="@+id/item1"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5sp"
+                    android:background="#ffffff"
+                    android:text="tea"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:onClick="addItem"
+                    android:id="@+id/item2"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5sp"
+                    android:background="#ffffff"
+                    android:text="cold\ndrink"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:onClick="addItem"
+                    android:id="@+id/item3"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5sp"
+                    android:background="#ffffff"
+                    android:text="other"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:onClick="addItem"
+                    android:id="@+id/item4"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5sp"
+                    android:background="#ffffff"
+                    android:text="aloo\nprantha"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:onClick="addItem"
+                    android:id="@+id/item5"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5sp"
+                    android:background="#ffffff"
+                    android:text="Burger"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:onClick="addItem"
+                    android:id="@+id/item6"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5sp"
+                    android:background="#ffffff"
+                    android:text="chowmin"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:onClick="addItem"
+                    android:id="@+id/item7"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5sp"
+                    android:background="#ffffff"
+                    android:text="roti\nroll"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:onClick="addItem"
+                    android:id="@+id/item8"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5sp"
+                    android:background="#ffffff"
+                    android:text="Momos"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:onClick="addItem"
+                    android:id="@+id/item9"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5sp"
+                    android:background="#ffffff"
+                    android:text="Omelet"
+                    android:textSize="18sp" />
+
+
+            </GridLayout>
 
 
             <LinearLayout
                 android:gravity="center"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.cardview.widget.CardView
-                    app:cardElevation="10dp"
-                    android:layout_marginHorizontal="20dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginVertical="5dp"
-                        android:padding="10dp"
-                        android:orientation="vertical"
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/RV_itemCard"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:padding="10dp"
-                            android:background="@drawable/bg_line"
-                            android:layout_margin="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/edt_order"
-                                android:layout_marginHorizontal="10dp"
-                                android:inputType="text"
-                                android:hint="Your Order"
-                                android:gravity="center"
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
-
-                            <EditText
-                                android:id="@+id/edt_quantity"
-                                android:background="@drawable/bg_line"
-                                android:inputType="number"
-                                android:gravity="center"
-                                android:hint="Quantity"
-                                android:text="1"
-                                android:layout_weight="2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
+                        android:layout_height="match_parent">
 
 
-                </androidx.cardview.widget.CardView>
-
+                    </androidx.recyclerview.widget.RecyclerView>
 
 
             </LinearLayout>
@@ -136,21 +191,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:textColor="@color/black"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:id="@+id/addOrder"
-                android:background="@drawable/bg_btn"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Add Order"
-                />
 
             <TextView
-                android:visibility="gone"
+                android:clickable="false"
                 android:textColor="@color/black"
                 android:layout_margin="10dp"
                 android:layout_weight="1"

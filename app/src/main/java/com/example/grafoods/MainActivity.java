@@ -2,6 +2,8 @@ package com.example.grafoods;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -17,6 +19,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,20 +43,15 @@ public class MainActivity extends AppCompatActivity {
     TextView _genToken , _txtToken , _addOrder , _doneOrder;
     int token_num = 0 ,max = 999 ,min = 100;
 
-    EditText _edtOrder , _edtQuantity;
+    ArrayList<ItemHolderArray> arrayList;
+    RecylerViewAdapter recylerViewAdapter;
 
-    ListView listView_order;
+    RecyclerView recyclerView;
 
-    ArrayList<String> arrayList_Item;
-    ArrayList<String> _Item;
-    ArrayList<String> _Quantity;
-
-    ArrayAdapter<String> arrayAdapter_ItemList;
-    ItemClass itemClass;
+    GridLayout gridLayout;
 
     FirebaseFirestore firebaseFirestore;
 
-    ProgressBar progressBar ;
     SharedPreferences sharedPreferences;
 
     @SuppressLint("MissingInflatedId")
@@ -70,28 +69,25 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+        arrayList = new ArrayList<>();
+
         _genToken = findViewById(R.id.txt_Gentoken);
         _txtToken = findViewById(R.id.txt_token);
-        _addOrder = findViewById(R.id.addOrder);
         _doneOrder = findViewById(R.id.DoneOrder);
 
-        listView_order = findViewById(R.id.LV_item);
+        gridLayout = findViewById(R.id.grid_item);
 
-        _edtOrder = findViewById(R.id.edt_order);
-        _edtQuantity = findViewById(R.id.edt_quantity);
+        recyclerView = findViewById(R.id.RV_itemCard);
 
-        progressBar = new ProgressBar(getApplicationContext());
+        recylerViewAdapter = new RecylerViewAdapter(arrayList);
 
-        _Item = new ArrayList<String>();
-        _Quantity = new ArrayList<String>();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL, false);
 
-        arrayList_Item = new ArrayList<String>();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(recylerViewAdapter);
 
-        arrayAdapter_ItemList = new ArrayAdapter<>(getApplicationContext(),
-                android.R.layout.simple_list_item_1,
-                arrayList_Item);
-
-        listView_order.setAdapter(arrayAdapter_ItemList);
+        Toast.makeText(getApplicationContext(),"here working",Toast.LENGTH_SHORT).show();
 
         // function to generate to token
         _genToken.setOnClickListener(new View.OnClickListener() {
@@ -105,70 +101,55 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // function to add order in the listview
-        _addOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String orderName = _edtOrder.getText().toString();
-                String orderQuant = _edtQuantity.getText().toString();
 
-                _Item.add(orderName);
-                _Quantity.add(orderQuant);
+//        _doneOrder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(_txtToken.getText().toString().isEmpty()){
+//                    _txtToken.setError("Token required");
+//                    return;
+//                }
+//                if(arrayList.size() == 0){
+//                    Toast.makeText(MainActivity.this, "Please order something first", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                firebaseFirestore = FirebaseFirestore.getInstance();
+//                DocumentReference documentReference = firebaseFirestore.collection("Tokens").document(String.valueOf(token_num));
+//                documentReference.set(new ItemClass(_Item,_Quantity,"")).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        Toast.makeText(MainActivity.this, "Order created successfully....", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(getApplicationContext(), ShowOrders.class);
+//                        intent.putExtra("TokenNumber",String.valueOf(token_num));
+//                        startActivity(intent);
+//
+//                        SharedPreferences sharedPreferences1 = getSharedPreferences("MainAct", MODE_PRIVATE);
+//                        SharedPreferences.Editor myEdit = sharedPreferences1.edit();
+//                        myEdit.putString("orderPlaced","next");
+//                        myEdit.commit();
+//
+//                        finish();
+//                    }
+//                });
+//
+//            }
+//        });
 
-                String toBeInserted ="Item Name : " + orderName.toUpperCase() + "   Quantity : " + orderQuant;
-                arrayList_Item.add(toBeInserted);
-                arrayAdapter_ItemList.notifyDataSetChanged();
-                _doneOrder.setVisibility(View.VISIBLE);
+    }
+
+    public void addItem(View view) {
+        TextView itemName = (TextView) view;
+        String _strItemName = itemName.getText().toString();
+        for (int i = 0; i < arrayList.size(); i++) {
+            if(arrayList.get(i).getItemName().equals(_strItemName)){
+                int quant = Integer.parseInt(arrayList.get(i).getItemQuantity().toString()) ;
+                quant += 1;
+                arrayList.get(i).setItemQuantity(String.valueOf(quant));
+                recylerViewAdapter.notifyDataSetChanged();
+                return;
             }
-        });
-
-        _doneOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(_txtToken.getText().toString().isEmpty()){
-                    _txtToken.setError("Token required");
-                    return;
-                }
-                if(arrayList_Item.size() == 0){
-                    Toast.makeText(MainActivity.this, "Please order something first", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                firebaseFirestore = FirebaseFirestore.getInstance();
-                DocumentReference documentReference = firebaseFirestore.collection("Tokens").document(String.valueOf(token_num));
-                documentReference.set(new ItemClass(_Item,_Quantity,"")).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(MainActivity.this, "Order created successfully....", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), ShowOrders.class);
-                        intent.putExtra("TokenNumber",String.valueOf(token_num));
-                        startActivity(intent);
-
-                        SharedPreferences sharedPreferences1 = getSharedPreferences("MainAct", MODE_PRIVATE);
-                        SharedPreferences.Editor myEdit = sharedPreferences1.edit();
-                        myEdit.putString("orderPlaced","next");
-                        myEdit.commit();
-
-                        finish();
-                    }
-                });
-
-            }
-        });
-
-        // function to delete the order from the listview by long pressing on it
-        listView_order.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                arrayList_Item.remove(position);
-                _Quantity.remove(position);
-                _Item.remove(position);
-                arrayAdapter_ItemList.notifyDataSetChanged();
-                if(arrayList_Item.size() == 0){
-                    _doneOrder.setVisibility(View.GONE);
-                }
-                return true;
-            }
-        });
-
+        }
+        arrayList.add(new ItemHolderArray(_strItemName,"1"));
+        recylerViewAdapter.notifyDataSetChanged();
     }
 }
