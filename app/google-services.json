@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "764786812149",
+    "project_id": "grafoods-8ad69",
+    "storage_bucket": "grafoods-8ad69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764786812149:android:2abb50e7404e2912a491bc",
+        "android_client_info": {
+          "package_name": "com.example.grafoods"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764786812149-ohsbthn98m5bi2tlj6vmidb4nn220820.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAP7BWPOj4fXfaZ5GaeOR1lwYq2hNQjdc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764786812149-ohsbthn98m5bi2tlj6vmidb4nn220820.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
