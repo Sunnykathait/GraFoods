@@ -52,7 +52,7 @@
             android:layout_height="match_parent">
 
             <GridLayout
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_margin="20dp"
                 android:id="@+id/grid_item"
                 android:rowCount="5"
@@ -159,26 +159,33 @@
                     android:text="Omelet"
                     android:textSize="18sp" />
 
-
             </GridLayout>
 
-
             <LinearLayout
+                android:padding="10dp"
+                android:background="@drawable/bg_line"
+                android:orientation="vertical"
                 android:gravity="center"
                 android:layout_weight="5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
-
                     <androidx.recyclerview.widget.RecyclerView
+                        android:layout_weight="1"
                         android:id="@+id/RV_itemCard"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"/>
 
 
-                    </androidx.recyclerview.widget.RecyclerView>
-
+                    <TextView
+                        android:background="@drawable/bg_btn"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:textColor="@color/black"
+                        android:text="Total Amount : "
+                        android:layout_weight="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
             </LinearLayout>
 

@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
+    ArrayList<String> _Item , _Quantity;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.RV_itemCard);
 
-        recylerViewAdapter = new RecylerViewAdapter(arrayList);
+        recylerViewAdapter = new RecylerViewAdapter(arrayList,this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL, false);
 
@@ -102,38 +105,46 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        _doneOrder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(_txtToken.getText().toString().isEmpty()){
-//                    _txtToken.setError("Token required");
-//                    return;
-//                }
-//                if(arrayList.size() == 0){
-//                    Toast.makeText(MainActivity.this, "Please order something first", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                firebaseFirestore = FirebaseFirestore.getInstance();
-//                DocumentReference documentReference = firebaseFirestore.collection("Tokens").document(String.valueOf(token_num));
-//                documentReference.set(new ItemClass(_Item,_Quantity,"")).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Toast.makeText(MainActivity.this, "Order created successfully....", Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(getApplicationContext(), ShowOrders.class);
-//                        intent.putExtra("TokenNumber",String.valueOf(token_num));
-//                        startActivity(intent);
-//
-//                        SharedPreferences sharedPreferences1 = getSharedPreferences("MainAct", MODE_PRIVATE);
-//                        SharedPreferences.Editor myEdit = sharedPreferences1.edit();
-//                        myEdit.putString("orderPlaced","next");
-//                        myEdit.commit();
-//
-//                        finish();
-//                    }
-//                });
-//
-//            }
-//        });
+        _doneOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _Item = new ArrayList<>();
+                _Quantity = new ArrayList<>();
+
+                for (int i  = 0 ; i < arrayList.size() ; i++){
+                    _Item.add(arrayList.get(i).getItemName());
+                    _Quantity.add(arrayList.get(i).getItemQuantity());
+                }
+
+                if(_txtToken.getText().toString().isEmpty()){
+                    _txtToken.setError("Token required");
+                    return;
+                }
+                if(arrayList.size() == 0){
+                    Toast.makeText(MainActivity.this, "Please order something first", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                firebaseFirestore = FirebaseFirestore.getInstance();
+                DocumentReference documentReference = firebaseFirestore.collection("Tokens").document(String.valueOf(token_num));
+                documentReference.set(new ItemClass(_Item,_Quantity,"")).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(MainActivity.this, "Order created successfully....", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), ShowOrders.class);
+                        intent.putExtra("TokenNumber",String.valueOf(token_num));
+                        startActivity(intent);
+
+                        SharedPreferences sharedPreferences1 = getSharedPreferences("MainAct", MODE_PRIVATE);
+                        SharedPreferences.Editor myEdit = sharedPreferences1.edit();
+                        myEdit.putString("orderPlaced","next");
+                        myEdit.commit();
+
+                        finish();
+                    }
+                });
+
+            }
+        });
 
     }
 
